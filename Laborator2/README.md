@@ -95,7 +95,9 @@ EXERCISES
 
 •	Add variable endVoting. Initialize this variable in the constructor using block.timestamp.
 
-•	Add variables or functions needed in order to verify that each generated voting token is used only once by a given address.
+•	Add variables or functions needed in order to verify that each generated voting token is generated only once for a given address.
+
+•	Add variables or functions needed in order to verify that each generated voting token is used only once for voting.
 
 •	Complete the definition of function winningProposal.
 
