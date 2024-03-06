@@ -93,16 +93,14 @@ EXERCISES
 
 1.	Work on file VotingStart.sol. Test on RemixIDE https://remix.ethereum.org/
 
-•	Add variable endVoting. Initialize this variable in the constructor using block.timestamp.
+•	Add variable endVoting. Initialize this variable in the constructor using block.timestamp. Using require, revert the method vote if the block timestamp is greater than endVoting.
 
 •	Add variables or functions needed in order to verify that each generated voting token is generated only once for a given address.
 
-•	Add variables or functions needed in order to verify that each generated voting token is used only once for voting.
+•	Add variables or functions needed in order to verify that an address can only vote once.
 
-•	Complete the definition of function winningProposal.
+•	Complete the definition of function winningProposal. Voting period should be finished and the proposal with the most votes wins.
 
-2.	Team members: Modify the code to enable the registration and retrieval of team members names for each proposal.
+2.	Delegated Votes: Modify the code to enable each token owner to delegate it’s vote to another address after registration. Modify the vote method so that only one of the voter or its delegator can vote.
 
-
-3.	Delegated Votes: Modify the code to enable each token owner to delegate it’s vote to another address after registration.
-
+3.	Team members: Modify the code to enable the registration and retrieval of team members names for each proposal.
