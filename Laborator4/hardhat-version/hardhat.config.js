@@ -3,7 +3,12 @@ require('@nomiclabs/hardhat-ethers');
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   networks: {
-    hardhat: {},
+    hardhat: {
+      gas: "auto",
+      mining: {
+        interval: 2000, //ms
+      }
+    },
     sepolia: {
       url: "https://ethereum-sepolia-rpc.publicnode.com",
       accounts: [""]

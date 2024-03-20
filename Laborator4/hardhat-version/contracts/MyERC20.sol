@@ -56,7 +56,7 @@ contract MyERC20{
     }
 
     function allowance(address tokenOwner, address spender) public view 
-								returns(uint) { 
+								returns(uint) {
         return spendlimit[tokenOwner][spender];
     }
 

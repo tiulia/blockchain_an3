@@ -1,7 +1,7 @@
 require("@nomiclabs/hardhat-ethers");
 const { ethers } = require("hardhat");
 
-async function deploy() {
+async function interact() {
     [owner] = await ethers.getSigners();
 
     let deployedTokenAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3"
@@ -10,9 +10,12 @@ async function deploy() {
     // Call some methods from the token
     let totalSupply = await token.totalSupply();
     console.log("total supply: ", totalSupply)
+
+    let userBalance = await token.balanceOf(owner.address)
+    console.log("user balance: ", userBalance)
 }
 
-deploy()
+interact()
     .then(() => process.exit(0))
     .catch(error => {
         console.error(error);
