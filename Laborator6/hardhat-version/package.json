@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "hardhat": "^2.22.2"
+  },
+  "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@openzeppelin/contracts": "^4.9.4"
+  }
+}
