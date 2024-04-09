@@ -11,7 +11,7 @@ async function interact() {
     let calls = await ethers.getContractAt("ContractCalls", deployedCallsAddress)
 
     let overwrite = {
-        value: 3e5
+        value: ethers.utils.parseEther("5")
     }
 
     // CallTransfer
