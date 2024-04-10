@@ -27,6 +27,7 @@ async function preMine(blocks) {
 
 module.exports = {
     gameAddress: function () {return gameAddress},
+    owner: function () {return owner},
     user1: function () {return user1},
     user2: function () {return user2},
     user3: function () {return user3},

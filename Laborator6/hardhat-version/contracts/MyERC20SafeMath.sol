@@ -4,7 +4,7 @@ pragma solidity >=0.7.0 <0.9.0;
 
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract MyERC20{
+contract MyERC20Safe {
     using SafeMath for uint;
 
     uint256 nbTokens;   

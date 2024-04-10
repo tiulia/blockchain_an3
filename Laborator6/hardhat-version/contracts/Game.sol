@@ -94,7 +94,7 @@ contract Game{
     * @param _gameStake each player should send _gameStake wei to join the game.
     */
 
-    function startGame(uint256 _gameStake, uint256 _gameReward, address  erc20Token) canSendReward(erc20Token, maxPlayersG) public payable {
+    function startGame(uint256 _gameStake, uint256 _gameReward, address  erc20Token) canSendReward(erc20Token, _gameReward) public payable {
         require (gameId < maxGameId);
         GameParams storage _gameParams = gameParams[gameId];
         _gameParams.dealer = msg.sender;
