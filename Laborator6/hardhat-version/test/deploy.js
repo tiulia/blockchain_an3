@@ -1,5 +1,4 @@
 const {ethers} = require("hardhat");
-const {expect} = require("chai");
 const common = require("./common.js");
 
 describe("Deploy", function () {

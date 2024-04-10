@@ -1,5 +1,4 @@
 const { ethers } = require("hardhat")
-const {expect} = require("chai");
 
 let gameAddress;
 let owner, user1, user2, user3, user4, user5;
