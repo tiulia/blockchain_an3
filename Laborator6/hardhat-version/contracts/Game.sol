@@ -128,7 +128,6 @@ contract Game{
             emit Round(player, _gameId, gameStates[_gameId][player].totalInHand );
             i++;
         }
-        
     }
 
 
