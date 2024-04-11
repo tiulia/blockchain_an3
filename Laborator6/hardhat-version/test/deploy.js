@@ -31,7 +31,11 @@ describe("Play a game", function () {
         await token.deployed()
         tokenContract = token;
 
-        let amount = ethers.utils.parseEther("50")
+        let amount = ethers.utils.parseEther("1001")
+        await expect(tokenContract.connect(owner).transfer(gameContract.address, amount)).
+            to.be.revertedWith("Insufficient funds!")
+
+        amount = ethers.utils.parseEther("50")
         let transferTx = await tokenContract.connect(owner).transfer(gameContract.address, amount)
         await transferTx.wait()
 
@@ -39,7 +43,7 @@ describe("Play a game", function () {
         await expect(gameTokenBalance).to.be.equal(amount);
     })
 
-    it("End a game smoothly", async function () {
+    it("Should end a game smoothly", async function () {
         // 1. Start a game
         let stake = ethers.utils.parseEther("0.1")
         let reward = ethers.utils.parseEther("50")
