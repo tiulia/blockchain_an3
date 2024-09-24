@@ -14,6 +14,8 @@ export const Welcome = () => {
     initializeWallet(signer);
   };
 
+
+  // The accountChangedHandler function is passed as a callback to be executed when the account changes  
   const handleConnectMetaMaskButtonClick = () => {
     connectWalletMetamask(accountChangedHandler);
   };

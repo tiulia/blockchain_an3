@@ -5,15 +5,17 @@ This project implements the basic functionalities of an Ethereum wallet. It show
 ## Denominations
 
 Smaller denominations of Ether easier to use in transactions since transactions usually involve less than 1 eth:
-- 1 Ether = 103 Finney
-- 1 Ether = 109 Gwei
-- 1 Ether = 1018 Wei
+- 1 Ether = 10<sup>3</sup> Finney
+- 1 Ether = 10<sup>9</sup> Gwei
+- 1 Ether = 10<sup>18</sup> Wei
 
 https://info.etherscan.com/ethereum-unit-converter/
 
 ## General Observations - ETH wallets
+In an Ethereum network, an account linked to a pair of public/private keys has a balance of ETH. Ethereum wallet applications provide access to funds (inspect balance, transfer funds, manage other tokens) linked to a private key.
 
-Private keys should be kept on users’ device (hot wallet), never stored on server-side. In Metamask keys are stored in browser’s files and may be recovered with a mnemonic phrase.
+Private keys should be kept on users’ device (hot wallet), never stored on server-side. In Metamask keys are stored in browser’s files and may be recovered with a [mnemonic phrase](
+https://support.metamask.io/privacy-and-security/what-is-a-secret-recovery-phrase-and-how-to-keep-your-crypto-wallet-secure/).
 
 ## Getting started
 
@@ -21,7 +23,45 @@ Private keys should be kept on users’ device (hot wallet), never stored on ser
 Open the MetaMask browser extension and create at least two Ethereum accounts for the Sepolia testnet. We should be able to demonstrate transfers between accounts. 
 
 ### Get Sepolia ETH
-Get Sepolia ETH from https://sepolia-faucet.pk910.de/.
+Get Sepolia ETH from
+
+https://sepolia-faucet.pk910.de/.
+
+https://faucets.chain.link/sepolia
+
+
+### Connect Metamask to a Hardhat local network
+[Set up an run a development network](https://docs.metamask.io/wallet/how-to/run-devnet/)
+
+In an empty folder create a Hardhat project.
+First, install Hardhat using npm. Use **init** to create the project structure.
+
+```
+npm install --save hardhat
+```
+
+```
+npx hardhat init
+```
+
+Edit **hardaht.config.js** file.
+
+```
+module.exports = {
+  ...
+  networks: {
+      hardhat: {
+        chainId: 1337,
+      },
+    },
+};
+```
+
+Run the local network, which will provide 20 default test accounts, each with a balance of 10000 ETH.
+
+```
+npx hardhat node
+```
 
 ### Run the client app with npm 
 Clone the git repository and run:
@@ -34,16 +74,15 @@ npm install
 npm start
 ```
 
-
 ## Components
 
 The application has two main components:
-- **Welcome page**: This page presents generic information and a button that will create a wallet based on the connection with MetaMask.
-- **Wallet page**: This page shows the balance of the account connected with MetaMask. It also opens a form as a pop-up that allows for ETH transfers. 
+- **Welcome page**: This page presents generic information and a button that will create a wallet component based on the connection with MetaMask.
+- **Wallet page**: This page shows the balance of the account connected with MetaMask. It also opens a pop-up form that allows ETH transfers. 
 
-In App.js, you'll find a RouterProvider for navigation between the two components and a Context providing a Wallet, which is the WalletContext encapsulating a WalletProvider.
+In **App.js**, you will find a **RouterProvider** for navigation between the two components and a Context providing a Wallet component, which is the **WalletContext** encapsulating a **WalletProvider**.
 
-The implementation for the WalletContext is found in utils/Context.js
+The implementation for the **WalletContext** is found in utils/Context.js
 
 ### Wallet Context provides: 
 - **initializeWallet**: a callback function to instantiate the wallet. This function is called in the Welcome page after a successful connection to the MetaMask Wallet.
@@ -58,11 +97,11 @@ The implementation for the WalletContext is found in utils/Context.js
 
 Wallet functionalities are added in utils/EthersUtils.js.
 
-https://docs.ethers.org/v5/
+[Ether library docs](https://docs.ethers.org/v5/).
 
 Ethers is a library for interacting with the Ethereum Blockchain and its ecosystem. 
 
-The classes most developers will use are Provider and Wallet. 
+The classes most developers will use are **Provider** and **Wallet**. 
 
 The following code instantiates a BrowserProvider .i.e. MetaMask. We get the active account (the signer Wallet) by calling 'eth_requestAccounts' on the provider.
 
@@ -96,13 +135,17 @@ const transactionResponse = await wallet.sendTransaction({
 
 ## Assignment: 
 
-Add functionalities to get the amount of gas spent for a  transaction, the block number, and the block timestamp of the block in which the transaction is included. 
+**Add a component listing all transactions of the account** as a list of transaction hashes.
 
-Use the transaction hash returned by wallet.sendTransaction and the Etherscan API.
+Get the transaction receipts from transaction hashes and add functionalities to get the amount of gas spent for a transaction, the block number, and the block timestamp of the block in which the transaction is included, etc.
+
+Use the transaction hash returned by the Etherscan API.
 
 https://etherscan.io/
 
 https://etherscan.io/apis
+
+https://docs.ethers.org/v5/api/providers/api-providers/#EtherscanProvider
 
 
 ## Getting Started with Create React App [readme generated by create react app]

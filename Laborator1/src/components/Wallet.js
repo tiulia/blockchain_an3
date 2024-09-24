@@ -37,7 +37,7 @@ export const Wallet = () => {
     const amountInWei = convertAmountToWei(amountToSend, selectedUnit);
     console.log("wei to send: " + amountInWei)
     sendTransaction(wallet, recipientAddress, amountInWei).then((transactionHash) => {
-      setTransactionResponse('Transation hash: ' + transactionHash);
+      setTransactionResponse('Transaction hash: ' + transactionHash);
       console.log(transactionResponse);
       setShowPopup(true);
     }).catch((reason) => {
@@ -59,7 +59,6 @@ export const Wallet = () => {
 
   const fetchBalance = async () => {
     getBalance(wallet.address).then((result) => {
-      console.log("Current balance: " + result);
       setBalance(result.toString());
     });
   };
