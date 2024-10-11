@@ -24,8 +24,9 @@ contract Voting{
     uint endRegister;
     uint endVoting;
 
+    uint nonce;
+
     mapping(address => Voter) public voters;
-    mapping(bytes32 => address) voteTokens;
 
     Proposal[] public proposals;
 
@@ -49,19 +50,24 @@ contract Voting{
         proposals[idx].state = state;
     }
 
-
-    function registerVoter(bytes32 givenToken) external returns (bytes32 generatedToken){
-        generatedToken =  keccak256(abi.encodePacked(givenToken, msg.sender));
-        voters[msg.sender].token = generatedToken;
+    function registerVoter(bytes32 registerToken) external returns (bytes memory votingToken){
+        bytes32 randToken =  keccak256(abi.encodePacked(nonce, registerToken, block.timestamp));  
+        voters[msg.sender].token = randToken;
         voters[msg.sender].voted = false;
-        voteTokens[generatedToken] = msg.sender;
-
+        votingToken = abi.encodePacked(randToken, msg.sender);
+        nonce += 1;
     }
 
+    function vote(uint[] memory votes, bytes memory signedToken) external{
+        require (endVoting >= block.timestamp, "voting is over!");
+        bytes32 randToken =  voters[msg.sender].token;
+        bytes memory votingToken = abi.encodePacked(randToken, msg.sender);
 
-    function vote(uint[] memory votes, bytes32 token) external{
-        require (voteTokens[token] == msg.sender, "Invalid token"); 
+        bool validSig = checkSignature(signedToken, votingToken, msg.sender);
         
+        require (validSig, "invliad signature!");
+
+
         for(uint i = 0; i < votes.length; i++){
             proposals[votes[i]].voteCount += 1;
             voters[msg.sender].votes.push(votes[i]);
@@ -76,12 +82,30 @@ contract Voting{
         * @dev does not treat equal vote count.
     */
     function winningProposal() public view returns (uint winningProposalId){
-        uint winningVoteCount = 0;
+                uint winningVoteCount = 0;
         for (uint p = 0; p < proposals.length; p++) {
             if (proposals[p].voteCount > winningVoteCount) {
                 winningVoteCount = proposals[p].voteCount;
                 winningProposalId = p;
             }
         }
-    }      
+
+    }
+
+
+    function sigRSV(bytes memory sig) public pure returns (bytes32 r,bytes32 s,uint8 v) {
+        require(sig.length == 65, "invalid signature");
+
+        assembly {
+            r := mload(add(sig, 32))
+            s := mload(add(sig, 64))
+            v := byte(0, mload(add(sig, 96)))
+        }
+    }         
+
+    function checkSignature(bytes memory sig, bytes memory text, address sender) public pure returns (bool rez) {
+        (bytes32 r, bytes32 s, uint8 v) = sigRSV(sig);
+        bytes32 hashMsg = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", text));
+        rez = (ecrecover(hashMsg, v, r, s) == sender);
+    }
 }
