@@ -23,6 +23,8 @@ contract Voting{
 
     uint endRegister;
 
+    uint nonce;
+
     mapping(address => Voter) public voters;
 
     Proposal[] public proposals;
@@ -46,15 +48,16 @@ contract Voting{
         proposals[idx].state = state;
     }
 
-    function registerVoter(bytes32 givenToken) external returns (bytes32 generatedToken){
-        generatedToken =  keccak256(abi.encodePacked(givenToken, msg.sender));
-        voters[msg.sender].token = generatedToken;
+    function registerVoter(bytes32 registerToken) external returns (bytes32 votingToken){
+        bytes32 randToken =  keccak256(abi.encodePacked(nonce, registerToken, block.timestamp));  
+        voters[msg.sender].token = randToken;
         voters[msg.sender].voted = false;
-
+        votingToken = keccak256(abi.encodePacked(randToken, msg.sender));
+        nonce += 1;
     }
 
-    function vote(uint[] memory votes, bytes32 token) external{
-        
+    function vote(uint[] memory votes, bytes32 signedToken) external{
+
         for(uint i = 0; i < votes.length; i++){
             proposals[votes[i]].voteCount += 1;
             voters[msg.sender].votes.push(votes[i]);
