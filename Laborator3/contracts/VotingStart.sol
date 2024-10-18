@@ -4,18 +4,6 @@ pragma solidity >=0.7.0 <0.9.0;
 
 contract Voting{
 
-    function sort(uint[] memory v) public pure returns (uint[] memory) {
-        uint len = v.length;
-        for (uint i = 0; i < len - 1; i++) {
-                for (uint j = 0; j < len - i - 1; j++) {
-                    if (v[j] > v[j + 1]) {
-                        (v[j], v[j + 1]) = (v[j + 1], v[j]);
-                }
-            }
-        }
-        return v;
-    }
-
     enum State { Active, Inactive, Locked } 
 
     struct Voter{
@@ -36,70 +24,88 @@ contract Voting{
     uint endRegister;
     uint endVoting;
 
+    uint nonce;
+
     mapping(address => Voter) public voters;
-    mapping(bytes32 => address) voteTokens;
-    mapping(string => bytes32) projects;
 
     Proposal[] public proposals;
 
-    uint nrReqVotes;
-
-    constructor(uint argNrReqVotes) {
+    constructor() {
         chairperson = msg.sender;
-        endRegister = block.timestamp + 10 days;
-        endVoting = block.timestamp + 20 days;
-        nrReqVotes = argNrReqVotes;
+        endRegister = block.timestamp + 30 days;
+        endVoting = block.timestamp + 40 days;
     }
 
 
     function registerProposal(bytes32 projectName, string memory teamName) external {
-        require(block.timestamp <= endRegister, "Registration has ended");
-        require(projects[teamName] == 0, "Team has already register a project");
         proposals.push(Proposal({
             projectName: projectName,
             teamName: teamName,
             voteCount: 0,
             state: State.Inactive
         }));
-        projects[teamName] = projectName;
     }
 
     function setProposalState(uint idx, State state) external{
-        require (proposals[idx].state != state && !(proposals[idx].state == State.Active && state == State.Inactive), "Invalid state");
         proposals[idx].state = state;
     }
 
-
-
-    function registerVoter(bytes32 givenToken) external returns (bytes32 generatedToken){
-        generatedToken =  keccak256(abi.encodePacked(givenToken, msg.sender));
-        require (voteTokens[generatedToken] == address(0), "Token has been already used!" );
-        voters[msg.sender].token = generatedToken;
+    function registerVoter(bytes32 registerToken) external returns (bytes32 votingToken){
+        bytes32 randToken =  keccak256(abi.encodePacked(nonce, registerToken, block.timestamp));  
+        voters[msg.sender].token = randToken;
         voters[msg.sender].voted = false;
-        voteTokens[generatedToken] = msg.sender;
-
+        votingToken = keccak256(abi.encodePacked(randToken, msg.sender));
+        nonce += 1;
     }
 
+    function vote(uint[] memory votes, bytes memory signedToken) external{
+        require (endVoting >= block.timestamp, "voting is over!");
+        bytes32 randToken =  voters[msg.sender].token;
+        bytes32 votingToken = keccak256(abi.encodePacked(randToken, msg.sender));
 
-    function vote(uint[] memory votes, bytes32 token) external{
-        require (voteTokens[token] == msg.sender, "Invalid token"); 
-        require (voters[msg.sender].voted == false, "Voter has already voted!");
+        bool validSig = checkSignature(signedToken, votingToken, msg.sender);
+        
+        require (validSig, "invliad signature!");
+
+
         for(uint i = 0; i < votes.length; i++){
             proposals[votes[i]].voteCount += 1;
             voters[msg.sender].votes.push(votes[i]);
         }
 
         voters[msg.sender].voted = true; 
+
     }
 
 
-    function winningProposal() public view returns (uint winningProposalId) {
-        uint winningVoteCount = 0;
+    /**
+        * @dev does not treat equal vote count.
+    */
+    function winningProposal() public view returns (uint winningProposalId){
+                uint winningVoteCount = 0;
         for (uint p = 0; p < proposals.length; p++) {
             if (proposals[p].voteCount > winningVoteCount) {
                 winningVoteCount = proposals[p].voteCount;
                 winningProposalId = p;
             }
         }
-    }      
+
+    }
+
+
+    function sigRSV(bytes memory sig) public pure returns (bytes32 r,bytes32 s,uint8 v) {
+        require(sig.length == 65, "invalid signature");
+
+        assembly {
+            r := mload(add(sig, 32))
+            s := mload(add(sig, 64))
+            v := byte(0, mload(add(sig, 96)))
+        }
+    }         
+
+    function checkSignature(bytes memory sig, bytes32 text, address sender) public pure returns (bool rez) {
+        (bytes32 r, bytes32 s, uint8 v) = sigRSV(sig);
+        bytes32 hashMsg = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", text));
+        rez = (ecrecover(hashMsg, v, r, s) == sender);
+    }
 }

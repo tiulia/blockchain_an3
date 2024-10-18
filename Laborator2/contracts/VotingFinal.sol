@@ -50,18 +50,18 @@ contract Voting{
         proposals[idx].state = state;
     }
 
-    function registerVoter(bytes32 registerToken) external returns (bytes memory votingToken){
+    function registerVoter(bytes32 registerToken) external returns (bytes32 votingToken){
         bytes32 randToken =  keccak256(abi.encodePacked(nonce, registerToken, block.timestamp));  
         voters[msg.sender].token = randToken;
         voters[msg.sender].voted = false;
-        votingToken = abi.encodePacked(randToken, msg.sender);
+        votingToken = keccak256(abi.encodePacked(randToken, msg.sender));
         nonce += 1;
     }
 
     function vote(uint[] memory votes, bytes memory signedToken) external{
         require (endVoting >= block.timestamp, "voting is over!");
         bytes32 randToken =  voters[msg.sender].token;
-        bytes memory votingToken = abi.encodePacked(randToken, msg.sender);
+        bytes32 votingToken = keccak256(abi.encodePacked(randToken, msg.sender));
 
         bool validSig = checkSignature(signedToken, votingToken, msg.sender);
         
@@ -103,7 +103,7 @@ contract Voting{
         }
     }         
 
-    function checkSignature(bytes memory sig, bytes memory text, address sender) public pure returns (bool rez) {
+    function checkSignature(bytes memory sig, bytes32 text, address sender) public pure returns (bool rez) {
         (bytes32 r, bytes32 s, uint8 v) = sigRSV(sig);
         bytes32 hashMsg = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", text));
         rez = (ecrecover(hashMsg, v, r, s) == sender);
