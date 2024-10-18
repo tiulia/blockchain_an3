@@ -34,7 +34,7 @@ Supply chain management blockchain solutions oversee participant interactions, i
 
 
 ## Exercises
-1. **BonusPoints Contract** Add functions getTotalValue and getRequiredPoints and test the functions wiht an external contract.
+1. **BonusPoints Contract** Add functions getTotalValue and getRequiredPoints and test the functions with an external contract.
 
 ```js
 function getTotalValue(address client) external returns (uint totalValue){
@@ -48,8 +48,28 @@ function getRequiredPoints(address client, uint requiredValue) external returns 
     if (points[client] == 0) 
         revert NotFound();
 
-    require (this.getTotalValu (client) >= requiredValue, "Insufficient Funds!");
+    require (this.getTotalValue(client) >= requiredValue, "Insufficient Funds!");
 
+}
+
+
+//external contract
+
+function calculateRequiredPoints(address client, uint requiredValue) public returns (uint) {
+        nbCalls += 1;
+
+        try bonusPointsContract.getRequiredPoints(client, requiredValue) returns (uint requiredPoints) {
+            return requiredPoints; 
+        } 
+        catch Error(string memory reason) {
+            nbCallsError += 1;
+        } 
+        catch Panic(uint errorCode) {
+            nbCallsPanic += 1;
+        }
+        catch (bytes memory r) {
+            nbCallsRevert += 1;
+        }
 }
 ```    
 
