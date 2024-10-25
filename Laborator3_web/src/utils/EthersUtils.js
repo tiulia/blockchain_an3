@@ -35,8 +35,20 @@ const fetchTransactions = async (account) => {
 
 
 const fetchProposals = async (votingContract) => {
- 
-  return [];
+  const eventFilter = votingContract.filters.ProposalAdded();
+  const fromBlock = 0;
+  const toBlock = 'latest';
+
+  const events = await votingContract.queryFilter(eventFilter, 
+         fromBlock, toBlock);
+  
+         console.log(events);
+  return events.map(event => ({
+           proposer: event.args.proposer, 
+           participant1: event.args.participant1, 
+           participant2: event.args.participant2,
+           teamName: event.args.teamName
+         }));
 }
 
 
