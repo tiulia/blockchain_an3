@@ -30,7 +30,29 @@ const connectWalletMetamask = async (accountChangedHandler) => {
 
 
 const fetchTransactions = async (account) => {
-  return [];
+  
+  console.log(scanprovider.getBaseUrl());
+
+  const module = "account";
+  const params = {
+      action: "txlist",
+      address: account, 
+      startblock: 0,
+      endblock: 99999999,
+      sort: "asc",
+  };
+  
+  const history = await scanprovider.fetch(module, params);
+  
+  console.log(history);
+  return history.map(tx => ({
+    hash: tx.hash, 
+    receiver: tx.to, 
+    value: tx.value, 
+    timestamp: tx.timeStamp, 
+    block: tx.blockNumber, 
+    gas: tx.cumulativeGasUsed
+  }));
 };
 
 
@@ -43,7 +65,7 @@ const fetchProposals = async (votingContract) => {
          fromBlock, toBlock);
   
          console.log(events);
-  return events.map(event => ({
+     return events.map(event => ({
            proposer: event.args.proposer, 
            participant1: event.args.participant1, 
            participant2: event.args.participant2,
@@ -55,6 +77,10 @@ const fetchProposals = async (votingContract) => {
 const initializeContract = (contractAddress, contractABI) => {
   return new ethers.Contract(contractAddress, contractABI, provider);
 }
+
+
+
+
 
 module.exports = {
   provider,
