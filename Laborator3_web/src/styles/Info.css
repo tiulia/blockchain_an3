@@ -1,0 +1,17 @@
+.info {
+
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .info-content {
+    background: white;
+    color: black;
+    padding: 30px;
+    border-radius: 25px;
+    text-align: center;
+  }
+

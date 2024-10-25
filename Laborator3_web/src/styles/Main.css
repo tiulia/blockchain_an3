@@ -1,0 +1,97 @@
+input, select {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  
+}
+
+.line-container {
+  display: grid;
+  border: 1px solid #ccc;
+  padding: 10px;
+  grid-template-columns: repeat(1, 2fr); /* Two equal-width columns */
+  gap: 10px;
+}
+
+.line-container input,
+.line-container select {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 200px;  
+
+}
+
+
+.table-container {
+  max-height: 550px;
+  max-width: 1200px;
+  overflow-y: auto;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container thead,
+.table-container tbody {
+  display: block;
+  
+}
+
+.table-container thead {
+  width: 100%;
+}
+
+.table-container tbody {
+  max-height: 150px;
+  overflow-y: auto;
+  
+  background-color: #61dafb;
+  width: 100%;
+  background-color: whitesmoke;
+}
+
+.table-container th,
+.table-container td {
+  padding: 8px;
+  text-align: left;
+  font-size: small;
+  border: 1px solid #ddd;
+}
+
+
+
+.table-container td {
+  color: black;
+
+}
+
+.table-container th {
+  font-size: medium;
+}
+
+
+/* Button Styles */
+button {
+  background-color: #61dafb;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* Button Hover Effect */
+button:hover {
+  background-color: #4fa3d1;
+}

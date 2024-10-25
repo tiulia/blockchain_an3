@@ -34,6 +34,13 @@ contract Orders {
     }
 
 
+    function calculateRequiredPointsT(address client, uint requiredValue) 
+            public returns (uint) {
+        nbCalls += 1;
+
+        return bonusPointsContract.getRequiredPoints(client, requiredValue);
+    }
+
     function calculateRequiredPointsR(address client, uint requiredValue) public returns (uint) {
         nbCalls += 1;
 
@@ -100,12 +107,14 @@ contract BonusPoints{
     }
 
 
-    function getTotalValue(address client) external returns (uint totalValue){
+    function getTotalValue(address client) 
+    external returns (uint totalValue){
         nbCalls += 1;
         totalValue = points[client] * pointValue;
     }
 
     function getRequiredPoints(address client, uint requiredValue) external returns (uint requiredPoints){
+        nbCalls += 1;
         requiredPoints = requiredValue / pointValue;
         
         if (points[client] == 0) 

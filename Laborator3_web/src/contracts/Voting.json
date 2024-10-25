@@ -1,0 +1,361 @@
+{"abi" : [
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "regdays",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "votedays",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "proposer",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "participant1",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "participant2",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "teamName",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "proposalIdx",
+				"type": "uint256"
+			}
+		],
+		"name": "ProposalAdded",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "proposalIndex",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum Voting.State",
+				"name": "oldState",
+				"type": "uint8"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum Voting.State",
+				"name": "newState",
+				"type": "uint8"
+			}
+		],
+		"name": "ProposalStateChanged",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "voter",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256[]",
+				"name": "proposalIndices",
+				"type": "uint256[]"
+			}
+		],
+		"name": "VoteCast",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes",
+				"name": "sig",
+				"type": "bytes"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "text",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			}
+		],
+		"name": "checkSignature",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "rez",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "ndays",
+				"type": "uint256"
+			}
+		],
+		"name": "extendRegisterDates",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "ndays",
+				"type": "uint256"
+			}
+		],
+		"name": "extendVotingDates",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getNumberOfProposals",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "idx",
+				"type": "uint256"
+			}
+		],
+		"name": "getProposal",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "projectName",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "teamName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "voteCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum Voting.State",
+				"name": "state",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "proposals",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "projectName",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "teamName",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "voteCount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum Voting.State",
+				"name": "state",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "projectName",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "string",
+				"name": "teamName",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "participant1",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "participant2",
+				"type": "string"
+			}
+		],
+		"name": "registerProposal",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes32",
+				"name": "registerToken",
+				"type": "bytes32"
+			}
+		],
+		"name": "registerVoter",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "votingToken",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "idx",
+				"type": "uint256"
+			},
+			{
+				"internalType": "enum Voting.State",
+				"name": "newState",
+				"type": "uint8"
+			}
+		],
+		"name": "setProposalState",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "bytes",
+				"name": "sig",
+				"type": "bytes"
+			}
+		],
+		"name": "sigRSV",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "r",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "s",
+				"type": "bytes32"
+			},
+			{
+				"internalType": "uint8",
+				"name": "v",
+				"type": "uint8"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256[]",
+				"name": "votes",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "bytes",
+				"name": "signedToken",
+				"type": "bytes"
+			}
+		],
+		"name": "vote",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "winningProposal",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "winningProposalId",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]
+}
