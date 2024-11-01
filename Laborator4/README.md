@@ -94,7 +94,7 @@ b. Configure Infura API Key as in [3].
 
 c. Configure networks in hardhat.config.js:
 
-```json
+```
 networks: {
     hardhat: {
       gas: "auto",
