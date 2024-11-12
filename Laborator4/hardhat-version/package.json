@@ -1,8 +1,11 @@
 {
   "devDependencies": {
-    "@nomicfoundation/edr-linux-x64-gnu": "^0.3.2",
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.8",
+    "@nomicfoundation/hardhat-ethers": "^3.0.8",
+    "@nomiclabs/hardhat-solhint": "^4.0.1",
     "@openzeppelin/contracts": "^5.0.2",
-    "hardhat": "^2.22.1"
+    "ethers": "^6.13.2",
+    "hardhat": "^2.22.10",
+    "solidity-coverage": "^0.8.13"
   }
 }

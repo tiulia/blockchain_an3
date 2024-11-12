@@ -1,4 +1,6 @@
-require('@nomiclabs/hardhat-ethers');
+require("@nomicfoundation/hardhat-ethers");
+require("@nomicfoundation/hardhat-chai-matchers");
+
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -7,11 +9,12 @@ module.exports = {
       gas: "auto",
       mining: {
         interval: 2000, //ms
-      }
+      },
+      logging: true,
     },
     sepolia: {
       url: "https://ethereum-sepolia-rpc.publicnode.com",
-      accounts: [""]
+      accounts: []
     }
   },
   defaultNetwork: "hardhat",
