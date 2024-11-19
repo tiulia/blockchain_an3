@@ -25,7 +25,7 @@ contract IOC is Ownable, Pausable{
         payable(owner).transfer(address(this).balance);
     }
 
-    function buy(uint256 tokens)public payable  whenNotPaused {
+    function buy(uint256 tokens) public payable  whenNotPaused {
         require(msg.value == tokens * unitPrice, "Invalid amount!");
         require(erc20Contract.balanceOf(address(this)) >= tokens, "Insufficinet tokens");
         require(erc20Contract.transfer(msg.sender, tokens), "Transfer failed!");
@@ -40,7 +40,6 @@ contract IOC is Ownable, Pausable{
     fallback() external payable{
         emit Receive(msg.sender, msg.value, 2);
     }
-
 
     function pause() public override whenNotPaused onlyOwner {
         paused = true;
