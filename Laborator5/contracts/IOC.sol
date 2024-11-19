@@ -31,6 +31,7 @@ contract IOC is Ownable, Pausable{
         require(erc20Contract.transfer(msg.sender, tokens), "Transfer failed!");
 
         emit Buy(msg.sender, tokens, unitPrice);
+        send(IOC2);
     }
 
     receive() external payable{

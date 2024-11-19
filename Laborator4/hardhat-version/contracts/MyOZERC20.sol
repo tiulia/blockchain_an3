@@ -10,7 +10,11 @@ contract MyOZERC20 is ERC20, Ownable {
         _mint(msg.sender, initialSupply);
     }
 
-    function mint(address to, uint amount) external {}
+    function mint(address to, uint amount) onlyOwner external {
+        _mint(to, amount);
+    }
     
-    function burn(uint amount) external {}
+    function burn(uint amount) external {
+        _burn(_msgSender(), amount);
+    }
 }

@@ -8,7 +8,7 @@ module.exports = {
     hardhat: {
       gas: "auto",
       mining: {
-        interval: 2000, //ms
+        interval: 100, //ms
       },
       logging: true,
     },
