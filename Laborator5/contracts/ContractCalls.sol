@@ -3,7 +3,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "./IOC.sol";
-
+import "hardhat/console.sol";
 
 contract ContractCalls{
     IOC public contractIOC;
@@ -20,7 +20,9 @@ contract ContractCalls{
     function callSend() public payable{
         address payable payableAdr = payable(address(contractIOC));
         bool test = payableAdr.send(msg.value);
-    //    require(test);
+        console.logString("test value");
+        console.logBool(test);
+//        require(test);
     }
 
     function callFallback() public payable{
@@ -29,7 +31,14 @@ contract ContractCalls{
     }
 
     function callReceive() public payable{
+        console.logString("CC callReceive");
+        console.logString("msg.sender");
+        console.logAddress(msg.sender);
+        console.logString("msg.value");
+        console.logUint(msg.value);
         (bool success,) = address(contractIOC).call{value: 10}("");
-        require(success);       
+        require(success);
+        console.logString("msg.value");
+        console.logUint(msg.value);
     }
 }
