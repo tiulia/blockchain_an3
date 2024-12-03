@@ -24,7 +24,8 @@ contract Auction {
     }
 
     function getPrize() external {
-        require(bidEnd > block.number, " Bid still going");
+        require(bidEnd <= block.number, " Bid still going");
+        bidInfo[highestBidder] = 0;
 
         (bool success, ) = payable(highestBidder).call{value: address(this).balance}("");
         require(success, "highestBidder.call returned false");
@@ -32,7 +33,7 @@ contract Auction {
 
     // Get 10%  back
     function getMoneyBack() external {
-        require(bidEnd <= block.number, " Bid ended");
+        require(bidEnd > block.number, " Bid ended");
 
         uint amount = bidInfo[msg.sender] / 10;
         (bool success, ) = payable(msg.sender).call{value:amount}("");
