@@ -5,7 +5,10 @@ async function deploy() {
     [owner, user1, user2, user3, user4, user5] = await ethers.getSigners();
 
     let tokenFactory = await ethers.getContractFactory("MyERC20");
-    let token = await tokenFactory.connect(owner).deploy(1e10);
+    let overwrite = {
+        value: ethers.parseEther("0.01")
+    }
+    let token = await tokenFactory.connect(owner).deploy(1e10, overwrite);
     await token.deployed();
     console.log("ERC20 address: ", token.address)
 }

@@ -6,7 +6,7 @@ import "hardhat/console.sol";
 contract Auction {
     address public highestBidder;
     uint public highestBid;
-    mapping(address => uint) bidInfo;
+    mapping(address => uint) public bidInfo;
     uint public bidEnd;
 
     constructor() public {
@@ -24,17 +24,18 @@ contract Auction {
     }
 
     function getPrize() external {
-        require(bidEnd <= block.number, " Bid ended");
+        require(bidEnd > block.number, " Bid still going");
 
-        (bool success, ) = payable(highestBidder).call{value: highestBid}("");
+        (bool success, ) = payable(highestBidder).call{value: address(this).balance}("");
         require(success, "highestBidder.call returned false");
-
-        bidInfo[highestBidder] = 0;
     }
 
+    // Get 10%  back
     function getMoneyBack() external {
+        require(bidEnd <= block.number, " Bid ended");
 
-        (bool success, ) = payable(msg.sender).call{value: bidInfo[msg.sender]}("");
+        uint amount = bidInfo[msg.sender] / 10;
+        (bool success, ) = payable(msg.sender).call{value:amount}("");
         require(success, "highestBidder.call returned false");
 
         bidInfo[highestBidder] = 0;
