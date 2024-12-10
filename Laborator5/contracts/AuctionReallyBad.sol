@@ -14,6 +14,8 @@ contract AuctionRB {
     }
 
     function bid() external payable {
+//        console.logUint(block.number);
+//        console.logUint(bidEnd);
         require(bidInfo[msg.sender] == 0, "Already bid");
         require(bidEnd > block.number, "Bid ended");
 
@@ -32,15 +34,19 @@ contract AuctionRB {
         require(success, "highestBidder.call returned false");
     }
 
-    // Get 10%  back
+    // Only get 20% back after bidding
     function getMoneyBack() external {
+        console.logString("auction getMoneyBack");
+        console.logString("Balance of auction");
+        console.logUint(address(this).balance);
         require(bidEnd > block.number, "Bid ended");
 
-        uint amount = bidInfo[msg.sender] / 10;
+        uint amount = bidInfo[msg.sender] / 5;
+
         (bool success, ) = payable(msg.sender).call{value:amount}("");
         require(success, "highestBidder.call returned false");
 
-        bidInfo[highestBidder] = 0;
+        bidInfo[msg.sender] = 0;
     }
 
 }
